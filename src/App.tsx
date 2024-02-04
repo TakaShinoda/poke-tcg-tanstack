@@ -1,11 +1,14 @@
 import './App.css'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Post, Posts } from './types'
+import axios from 'axios'
 
 function App() {
   const fetchPosts = async (): Promise<Posts> => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts')
-    return res.json()
+    const { data } = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
+    )
+    return data
   }
 
   const { data } = useQuery({
@@ -17,10 +20,10 @@ function App() {
 
   const { mutate } = useMutation({
     mutationFn: async (newPost: Post) => {
-      return await fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        body: JSON.stringify(newPost),
-      })
+      return await axios.post(
+        'https://jsonplaceholder.typicode.com/posts',
+        newPost
+      )
     },
   })
 
