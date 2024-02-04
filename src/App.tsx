@@ -1,41 +1,25 @@
 import './App.css'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { Post, Posts } from './types'
-import axios from 'axios'
+import { useFetchAllPosts, useCreatePost } from './api/post'
 
 function App() {
-  const fetchPosts = async (): Promise<Posts> => {
-    const { data } = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
-    return data
-  }
-
-  const { data } = useQuery({
-    queryKey: ['posts'] as const,
-    queryFn: fetchPosts,
-  })
-
-  console.log(data)
-
-  const { mutate } = useMutation({
-    mutationFn: async (newPost: Post) => {
-      return await axios.post(
-        'https://jsonplaceholder.typicode.com/posts',
-        newPost
-      )
-    },
-  })
+  const { mutate, status } = useCreatePost()
+  console.log('useCreatePost/status', status)
 
   const handleClick = () => {
-    console.log('click')
-    mutate({
+    const postData = {
       userId: 101,
       id: 101,
       title: 'test',
       body: 'testtesttest',
-    })
+    }
+    mutate(postData)
   }
+
+  const { data, isPending, isError } = useFetchAllPosts()
+
+  console.log('useFetchAllPosts/data', data)
+  console.log('useFetchAllPosts/isPending', isPending)
+  console.log('useFetchAllPosts/isError', isError)
 
   return (
     <>
