@@ -6,5 +6,3 @@ export type Post = {
 }
 
 export type GetPostsResponse = Post[]
-
-

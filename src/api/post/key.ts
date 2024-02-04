@@ -14,4 +14,3 @@ export const postKeys = {
   detail: (id: number) => [...postKeys.details(), id] as const,
   detailComments: (id: number) => [...postKeys.details(), id, 'comments'] as const,
 } as const
-
